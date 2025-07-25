@@ -131,9 +131,9 @@ export default function TermsOfServicePage() {
                   For questions about these Terms of Service, please contact us
                   at:
                   <br />
-                  <strong>Email:</strong> support@joldhara.com
+                  <strong>Email:</strong> contact@nextcoder.co.in
                   <br />
-                  <strong>Phone:</strong> +880-XXXX-XXXXXX
+                  <strong>Phone:</strong> +91 7001070713
                 </p>
               </div>
             </section>

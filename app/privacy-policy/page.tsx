@@ -383,13 +383,13 @@ export default function PrivacyPolicyPage() {
                 </h3>
                 <div className="space-y-2 text-gray-700">
                   <p>
-                    <strong>Email:</strong> privacy@joldhara.com
+                    <strong>Email:</strong> contact@nextcoder.co.in
                   </p>
                   <p>
-                    <strong>Phone:</strong> +880-XXXX-XXXXXX
+                    <strong>Phone:</strong> +7001070713
                   </p>
                   <p>
-                    <strong>Address:</strong> [Your Business Address]
+                    <strong>Address:</strong> jadab nagar, kulpi
                   </p>
                   <p>
                     <strong>Business Hours:</strong> 9:00 AM - 6:00 PM (Monday
