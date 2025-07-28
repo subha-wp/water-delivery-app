@@ -1,38 +1,44 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import type { User } from "@/lib/db"
-import { AssistantOrderForm } from "./assistant-order-form"
-import { DeliveryCompleteForm } from "./delivery-complete-form"
-import { AssistantHome } from "./assistant-home"
-import { AssistantOrders } from "./assistant-orders"
-import { AssistantProfile } from "./assistant-profile"
-import { BottomNav } from "./bottom-nav"
-import { Logo } from "./logo"
+import { useState } from "react";
+import type { User } from "@/lib/db";
+import { AssistantOrderForm } from "./assistant-order-form";
+import { DeliveryCompleteForm } from "./delivery-complete-form";
+import { AssistantHome } from "./assistant-home";
+import { AssistantOrders } from "./assistant-orders";
+import { AssistantProfile } from "./assistant-profile";
+import { BottomNav } from "./bottom-nav";
+import { Logo } from "./logo";
 
 interface AssistantDashboardProps {
-  user: User
+  user: User;
 }
 
 export function AssistantDashboard({ user }: AssistantDashboardProps) {
-  const [activeTab, setActiveTab] = useState<"home" | "orders" | "profile">("home")
-  const [showOrderForm, setShowOrderForm] = useState(false)
-  const [showDeliveryForm, setShowDeliveryForm] = useState<number | null>(null)
+  const [activeTab, setActiveTab] = useState<"home" | "orders" | "profile">(
+    "home"
+  );
+  const [showOrderForm, setShowOrderForm] = useState(false);
+  const [showDeliveryForm, setShowDeliveryForm] = useState<number | null>(null);
 
   const handleOrderCreated = () => {
-    setShowOrderForm(false)
-    setActiveTab("orders")
-  }
+    setShowOrderForm(false);
+    setActiveTab("orders");
+  };
 
   const handleDeliveryComplete = () => {
-    setShowDeliveryForm(null)
-    setActiveTab("orders")
-  }
+    setShowDeliveryForm(null);
+    setActiveTab("orders");
+  };
 
   if (showOrderForm) {
     return (
-      <AssistantOrderForm user={user} onOrderCreated={handleOrderCreated} onCancel={() => setShowOrderForm(false)} />
-    )
+      <AssistantOrderForm
+        user={user}
+        onOrderCreated={handleOrderCreated}
+        onCancel={() => setShowOrderForm(false)}
+      />
+    );
   }
 
   if (showDeliveryForm) {
@@ -43,13 +49,18 @@ export function AssistantDashboard({ user }: AssistantDashboardProps) {
         onComplete={handleDeliveryComplete}
         onCancel={() => setShowDeliveryForm(null)}
       />
-    )
+    );
   }
 
   const renderContent = () => {
     switch (activeTab) {
       case "home":
-        return <AssistantHome user={user} onPlaceOrder={() => setShowOrderForm(true)} />
+        return (
+          <AssistantHome
+            user={user}
+            onPlaceOrder={() => setShowOrderForm(true)}
+          />
+        );
       case "orders":
         return (
           <AssistantOrders
@@ -57,16 +68,21 @@ export function AssistantDashboard({ user }: AssistantDashboardProps) {
             onPlaceOrder={() => setShowOrderForm(true)}
             onDeliveryComplete={(orderId) => setShowDeliveryForm(orderId)}
           />
-        )
+        );
       case "profile":
-        return <AssistantProfile user={user} />
+        return <AssistantProfile user={user} />;
       default:
-        return <AssistantHome user={user} onPlaceOrder={() => setShowOrderForm(true)} />
+        return (
+          <AssistantHome
+            user={user}
+            onPlaceOrder={() => setShowOrderForm(true)}
+          />
+        );
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20 mb-20">
       {/* Header */}
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-md mx-auto px-4 py-4">
@@ -89,5 +105,5 @@ export function AssistantDashboard({ user }: AssistantDashboardProps) {
       {/* Bottom Navigation */}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
-  )
+  );
 }
