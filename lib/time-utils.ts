@@ -1,9 +1,9 @@
-// Utility functions for handling Indian timezon
+// Utility functions for handling Indian timezo
 export function formatDateTimeIST(dateString: string) {
   if (!dateString) return { date: "", time: "", fullDateTime: "" };
 
   // Manually parse UTC timestamp
-  const utcDate = new Date(dateString + "Z"); // Add "Z" to force UTC
+  const utcDate = new Date(dateString + "Z");
 
   return {
     date: utcDate.toLocaleDateString("en-IN", {
