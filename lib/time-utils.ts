@@ -1,4 +1,4 @@
-// Utility functions for handling Indian timezone
+// Utility functions for handling Indian timezon
 export function formatDateTimeIST(dateString: string) {
   if (!dateString) return { date: "", time: "", fullDateTime: "" };
 
