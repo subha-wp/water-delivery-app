@@ -180,7 +180,7 @@ export function CustomerOrders({ user }: CustomerOrdersProps) {
                     </div>
                   </div>
 
-                  {/* Order Time - IST */}
+                  {/* Order Time - IST
                   <div className="flex items-center space-x-2 p-3 bg-blue-50 rounded-md">
                     <Timer className="h-4 w-4 text-blue-600" />
                     <div className="flex-1">
@@ -228,7 +228,7 @@ export function CustomerOrders({ user }: CustomerOrdersProps) {
                   )}
 
                   {/* Cancellation Time - IST */}
-                  {cancelledDateTime && (
+                  {/* {cancelledDateTime && (
                     <div className="flex items-center space-x-2 p-3 bg-red-50 rounded-md">
                       <X className="h-4 w-4 text-red-600" />
                       <div className="flex-1">
@@ -252,7 +252,7 @@ export function CustomerOrders({ user }: CustomerOrdersProps) {
                         )}
                       </div>
                     </div>
-                  )}
+                  )} */}
 
                   {/* Delivery Assistant */}
                   {order.delivery_assistant_name &&
