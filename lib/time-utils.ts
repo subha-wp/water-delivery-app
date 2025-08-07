@@ -1,28 +1,24 @@
 // Utility functions for handling Indian timezone
 export function formatDateTimeIST(dateString: string) {
-  if (!dateString) return { date: "", time: "" };
+  if (!dateString) return { date: "", time: "", fullDateTime: "" };
 
-  const date = new Date(dateString);
-
-  // Convert to Indian Standard Time (IST)
-  const istDate = new Date(
-    date.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-  );
+  // Manually parse UTC timestamp
+  const utcDate = new Date(dateString + "Z"); // Add "Z" to force UTC
 
   return {
-    date: istDate.toLocaleDateString("en-IN", {
+    date: utcDate.toLocaleDateString("en-IN", {
       day: "numeric",
       month: "short",
       year: "numeric",
       timeZone: "Asia/Kolkata",
     }),
-    time: istDate.toLocaleTimeString("en-IN", {
+    time: utcDate.toLocaleTimeString("en-IN", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
       timeZone: "Asia/Kolkata",
     }),
-    fullDateTime: istDate.toLocaleString("en-IN", {
+    fullDateTime: utcDate.toLocaleString("en-IN", {
       day: "numeric",
       month: "short",
       year: "numeric",
