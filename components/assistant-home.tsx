@@ -10,14 +10,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Truck, Plus, IndianRupee, Calendar, Package } from "lucide-react";
-import { formatDateIST } from "@/lib/time-utils";
+import {
+  Truck,
+  Plus,
+  IndianRupee,
+  Calendar,
+  Package,
+  Gift,
+} from "lucide-react";
 import type { User } from "@/lib/db";
 import { getAssistantAnalytics } from "@/lib/analytics";
 
 interface AssistantHomeProps {
   user: User;
   onPlaceOrder: () => void;
+  onShowFreeJarDeliveries: () => void;
 }
 
 interface AnalyticsData {
@@ -30,7 +37,11 @@ interface AnalyticsData {
   }[];
 }
 
-export function AssistantHome({ user, onPlaceOrder }: AssistantHomeProps) {
+export function AssistantHome({
+  user,
+  onPlaceOrder,
+  onShowFreeJarDeliveries,
+}: AssistantHomeProps) {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [timeframe, setTimeframe] = useState<"today" | "week" | "month">(
     "today"
@@ -65,19 +76,34 @@ export function AssistantHome({ user, onPlaceOrder }: AssistantHomeProps) {
         </CardHeader>
       </Card>
 
-      {/* Quick Action */}
-      <Card>
-        <CardContent className="p-4">
-          <Button
-            onClick={onPlaceOrder}
-            className="w-full h-12 text-base"
-            size="lg"
-          >
-            <Plus className="h-5 w-5 mr-2" />
-            Place Order for Customer
-          </Button>
-        </CardContent>
-      </Card>
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 gap-3">
+        <Card>
+          <CardContent className="p-4">
+            <Button
+              onClick={onPlaceOrder}
+              className="w-full h-12 text-base"
+              size="lg"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Place Order for Customer
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+          <CardContent className="p-4">
+            <Button
+              onClick={onShowFreeJarDeliveries}
+              className="w-full h-12 text-base bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+              size="lg"
+            >
+              <Gift className="h-5 w-5 mr-2" />
+              🎁 Free Jar Deliveries
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Analytics */}
       <Card>
@@ -169,6 +195,36 @@ export function AssistantHome({ user, onPlaceOrder }: AssistantHomeProps) {
         </CardContent>
       </Card>
 
+      {/* Free Jar Info */}
+      <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg flex items-center space-x-2">
+            <Gift className="h-5 w-5 text-blue-600" />
+            <span className="text-blue-900">Free Jar Program</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+            <span className="text-sm text-blue-800">
+              Daily free jars available at 8:00 AM IST
+            </span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+            <span className="text-sm text-blue-800">
+              Limited to 10 customers per day
+            </span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+            <span className="text-sm text-blue-800">
+              Help deliver free jars to customers
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Tips */}
       <Card>
         <CardHeader className="pb-3">
@@ -197,6 +253,12 @@ export function AssistantHome({ user, onPlaceOrder }: AssistantHomeProps) {
             <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
             <span className="text-sm text-gray-700">
               Handle jars with care to avoid damage
+            </span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+            <span className="text-sm text-gray-700">
+              Check for free jar deliveries daily
             </span>
           </div>
         </CardContent>
