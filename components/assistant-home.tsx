@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import type { User } from "@/lib/db";
 import { getAssistantAnalytics } from "@/lib/analytics";
+import { getBookingTimeDisplay } from "@/lib/booking-config";
 
 interface AssistantHomeProps {
   user: User;
@@ -207,7 +208,7 @@ export function AssistantHome({
           <div className="flex items-center space-x-3">
             <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
             <span className="text-sm text-blue-800">
-              Daily free jars available at 8:00 AM IST
+              Daily free jars available at {getBookingTimeDisplay()}
             </span>
           </div>
           <div className="flex items-center space-x-3">

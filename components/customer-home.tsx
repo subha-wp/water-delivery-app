@@ -31,6 +31,7 @@ import { getActiveVillages } from "@/lib/villages";
 import type { Village } from "@/lib/villages";
 import { updateUserProfile } from "@/lib/auth";
 import { FreeJarBookingComponent } from "./free-jar-booking";
+import { getBookingTimeDisplay } from "@/lib/booking-config";
 
 interface CustomerHomeProps {
   user: User;
@@ -206,7 +207,7 @@ export function CustomerHome({ user, onPlaceOrder }: CustomerHomeProps) {
               <div>
                 <p className="font-medium text-blue-900">FREE Daily Jar</p>
                 <p className="text-sm text-blue-700">
-                  Every day at 8:00 AM IST
+                  Every day at {getBookingTimeDisplay()}
                 </p>
               </div>
             </div>
@@ -306,7 +307,7 @@ export function CustomerHome({ user, onPlaceOrder }: CustomerHomeProps) {
           <div className="flex items-center space-x-3">
             <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
             <span className="text-sm text-gray-700">
-              Daily FREE Jar at 8:00 AM
+              Daily FREE Jar at {getBookingTimeDisplay()}
             </span>
           </div>
           <div className="flex items-center space-x-3">

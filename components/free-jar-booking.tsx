@@ -28,6 +28,7 @@ import {
 } from "@/lib/free-jar-booking";
 import type { User } from "@/lib/db";
 import type { FreeJarBooking as FreeJarBookingType } from "@/lib/free-jar-booking";
+import { getBookingTimeDisplay } from "@/lib/booking-config";
 
 interface FreeJarBookingProps {
   user: User;
@@ -56,7 +57,7 @@ export function FreeJarBookingComponent({ user }: FreeJarBookingProps) {
   }, []);
 
   useEffect(() => {
-    if (timeInfo && !timeInfo.is_booking_time) {
+    if (timeInfo) {
       updateCountdown();
       const interval = setInterval(updateCountdown, 1000);
       return () => clearInterval(interval);
@@ -84,17 +85,13 @@ export function FreeJarBookingComponent({ user }: FreeJarBookingProps) {
   const updateCountdown = () => {
     if (!timeInfo) return;
 
-    const now = new Date();
-    const tomorrow8AM = new Date();
-    tomorrow8AM.setDate(tomorrow8AM.getDate() + 1);
-    tomorrow8AM.setHours(8, 0, 0, 0);
+    // Use the seconds_until_8am from the backend
+    const totalSeconds = timeInfo.seconds_until_8am;
 
-    const diff = tomorrow8AM.getTime() - now.getTime();
-
-    if (diff > 0) {
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    if (totalSeconds > 0) {
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
 
       setCountdown(
         `${hours.toString().padStart(2, "0")}:${minutes
@@ -290,8 +287,8 @@ export function FreeJarBookingComponent({ user }: FreeJarBookingProps) {
 
               <div className="p-1 bg-blue-50 rounded-lg text-center">
                 <p className="text-xs text-blue-800">
-                  💡 <strong>Pro Tip:</strong> Be ready at exactly 8:00 AM to
-                  get your free jar!
+                  💡 <strong>Pro Tip:</strong> Be ready at exactly{" "}
+                  {getBookingTimeDisplay()} to get your free jar!
                 </p>
               </div>
             </div>

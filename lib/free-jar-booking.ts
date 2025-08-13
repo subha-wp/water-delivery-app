@@ -1,6 +1,12 @@
 "use server";
 
 import { sql } from "./db";
+import {
+  BOOKING_CONFIG,
+  isWithinBookingWindow,
+  calculateSecondsUntilNextBooking,
+  getBookingTimeDisplay,
+} from "./booking-config";
 
 export interface FreeJarSlot {
   id: number;
@@ -31,17 +37,6 @@ export interface FreeJarBooking {
 
 export type FreeJarBookingType = FreeJarBooking;
 
-// Check if current time is exactly 8:00 AM IST
-export async function isValidBookingTime(): Promise<boolean> {
-  try {
-    const result = await sql`SELECT is_valid_booking_time() as is_valid`;
-    return result[0]?.is_valid || false;
-  } catch (error) {
-    console.error("Check booking time error:", error);
-    return false;
-  }
-}
-
 // Get current IST time info
 export async function getCurrentISTTime(): Promise<{
   current_time: string;
@@ -50,24 +45,20 @@ export async function getCurrentISTTime(): Promise<{
   seconds_until_8am: number;
 }> {
   try {
-    const result = await sql`
-      SELECT 
-        (NOW() AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::TIME as current_time,
-        (NOW() AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::DATE as current_date,
-        is_valid_booking_time() as is_booking_time,
-        CASE 
-          WHEN (NOW() AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::TIME < '08:00:00' THEN
-            EXTRACT(EPOCH FROM ('08:00:00'::TIME - (NOW() AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::TIME))
-          ELSE
-            EXTRACT(EPOCH FROM ('08:00:00'::TIME + INTERVAL '1 day' - (NOW() AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::TIME))
-        END as seconds_until_8am
-    `;
+    // Get current UTC time and convert to IST
+    const utcNow = new Date();
+    const istNow = new Date(
+      utcNow.toLocaleString("en-US", { timeZone: BOOKING_CONFIG.TIMEZONE })
+    );
+
+    const isBookingTime = isWithinBookingWindow(istNow);
+    const secondsUntil8AM = calculateSecondsUntilNextBooking(istNow);
 
     return {
-      current_time: result[0]?.current_time || "",
-      current_date: result[0]?.current_date || "",
-      is_booking_time: result[0]?.is_booking_time || false,
-      seconds_until_8am: Number(result[0]?.seconds_until_8am || 0),
+      current_time: istNow.toTimeString().split(" ")[0],
+      current_date: istNow.toISOString().split("T")[0],
+      is_booking_time: isBookingTime,
+      seconds_until_8am: secondsUntil8AM,
     };
   } catch (error) {
     console.error("Get IST time error:", error);
@@ -151,16 +142,16 @@ export async function bookFreeJar(
       VALUES (${customerId}, (NOW() AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::DATE, false, 'attempt_started')
     `;
 
-    // Check if it's exactly 8:00 AM IST
-    const isValidTime = await isValidBookingTime();
-    if (!isValidTime) {
+    // Check if it's within the booking window
+    const timeInfo = await getCurrentISTTime();
+    if (!timeInfo.is_booking_time) {
       await sql`
         INSERT INTO free_jar_booking_attempts (customer_id, slot_date, success, failure_reason)
         VALUES (${customerId}, (NOW() AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata')::DATE, false, 'invalid_time')
       `;
       return {
         success: false,
-        error: "Free jar booking is only available at exactly 8:00 AM IST",
+        error: `Free jar booking is only available at ${getBookingTimeDisplay()}`,
         shouldShowNetworkError: false,
       };
     }

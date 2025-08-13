@@ -7,17 +7,17 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['blob.v0.dev'],
+    domains: ["blob.v0.dev"],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'blob.v0.dev',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "blob.v0.dev",
+        port: "",
+        pathname: "/**",
       },
     ],
     unoptimized: true,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
