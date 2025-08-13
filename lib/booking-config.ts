@@ -3,8 +3,8 @@
 
 export const BOOKING_CONFIG = {
   // Booking time (24-hour format)
-  HOUR: 17, // 0-23 (8 = 8:00 AM)
-  MINUTE: 13, // 0-59 (0 = exactly at the hour)
+  HOUR: 8, // 0-23 (8 = 8:00 AM)
+  MINUTE: 0, // 0-59 (0 = exactly at the hour)
 
   // Booking window duration in minutes
   WINDOW_MINUTES: 1, // How long the booking window stays open
@@ -16,8 +16,8 @@ export const BOOKING_CONFIG = {
   TIMEZONE: "Asia/Kolkata",
 
   // Display settings
-  DISPLAY_NAME: "8:00 AM IST",
-  DESCRIPTION: "Daily free jar booking opens at 8:00 AM IST",
+  DISPLAY_NAME: "8:00 AM ",
+  DESCRIPTION: "Daily free jar booking opens at 8:00 AM",
 };
 
 // Helper function to get formatted booking time
@@ -32,7 +32,7 @@ export function getBookingTimeDisplay(): string {
   const ampm = BOOKING_CONFIG.HOUR >= 12 ? "PM" : "AM";
   const minute = BOOKING_CONFIG.MINUTE.toString().padStart(2, "0");
 
-  return `${hour12}:${minute} ${ampm} `;
+  return `${hour12}:${minute} ${ampm}`;
 }
 
 // Helper function to check if current IST time is within booking window
